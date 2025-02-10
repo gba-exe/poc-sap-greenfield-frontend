@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
@@ -57,7 +57,6 @@ export default function Home() {
     input.setCustomValidity(error || "");
     input.reportValidity();
 
-    input.setCustomValidity("");
     if (!error) {
       router.push("/transactions");
     }
@@ -77,7 +76,10 @@ export default function Home() {
             className="border border-black rounded-md p-2"
             placeholder="Transaction"
             value={roleName}
-            onChange={(e) => setRoleName(e.target.value)}
+            onChange={(e) => {
+              e.target.setCustomValidity("")
+              setRoleName(e.target.value)
+            }}
             required
           />
           <button
