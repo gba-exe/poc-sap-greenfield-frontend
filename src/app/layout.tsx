@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "POC Sap Greenfield",
   description: "POC Sap Greenfield",
+  icons: {
+    icon: "/favicon.png", 
+  },
 };
 
 export default function RootLayout({
