@@ -1,10 +1,26 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Transactions() {
   const [inputs, setInputs] = useState<number[]>([]);
+  const [transactions, setTransactions] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/transactions/code");
+        const data = await response.json();
+
+        setTransactions(data);
+      } catch (error) {
+        console.error("Error fetching transactions: ", error);
+      }
+    }
+
+    fetchTransactions();
+  }, []);
 
   const router = useRouter();
 
@@ -58,12 +74,16 @@ export default function Transactions() {
         >
           <label className="text-2xl font-bold">Enter Transaction: </label>
           <div className="flex flex-row items-center justify-center gap-2">
-            <input
-              type="text"
-              className="border border-black rounded-md p-2"
-              placeholder="Transaction"
-              required
-            />
+            <select
+              className="border border-black rounded-md p-2 min-w-64"
+              required>
+              <option value="">-- Select a transaction --</option>
+              {transactions.map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
             <button
               className="bg-black text-white font-bold rounded-md px-4 py-2"
               onClick={addInput}
@@ -76,12 +96,17 @@ export default function Transactions() {
               key={id}
               className="flex flex-row items-start justify-center gap-2"
             >
-              <input
-                type="text"
-                className="border border-black rounded-md p-2"
-                placeholder="Transaction"
-                required
-              />
+              <select
+                key={id}
+                className="border border-black rounded-md p-2 min-w-64"
+                required>
+                <option value="">-- Select a transaction --</option>
+                {transactions.map((value) => (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </select>
               <button
                 className="bg-black text-white font-bold rounded-md px-4 py-2"
                 onClick={addInput}
