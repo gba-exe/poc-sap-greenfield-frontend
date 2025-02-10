@@ -28,6 +28,7 @@ export default function Home() {
             type="text"
             className="border border-black rounded-md p-2"
             placeholder="Transaction"
+            pattern="(?i)(ZS:.*)"
             required
           />
           <button
