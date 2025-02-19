@@ -3,10 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function Home() {
+export default function Role() {
   const router = useRouter();
 
   const [roleName, setRoleName] = useState("");
+  const [keyUser, setKeyUser] = useState("");
 
   const validate = (roleName: string) => {
     roleName = roleName.toUpperCase();
@@ -58,7 +59,9 @@ export default function Home() {
     input.reportValidity();
 
     if (!error) {
-      router.push("/transactions");
+      const roleName = input.value;
+
+      router.push("/roles/role-transactions?roleName=" + roleName);
     }
   };
 
@@ -79,6 +82,18 @@ export default function Home() {
             onChange={(e) => {
               e.target.setCustomValidity("")
               setRoleName(e.target.value)
+            }}
+            required
+          />
+          <label className="text-2xl font-bold">Enter Key User: </label>
+          <input
+            type="text"
+            className="border border-black rounded-md p-2"
+            placeholder="Key User"
+            value={keyUser}
+            onChange={(e) => {
+              e.target.setCustomValidity("")
+              setKeyUser(e.target.value)
             }}
             required
           />
