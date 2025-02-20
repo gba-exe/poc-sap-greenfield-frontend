@@ -25,7 +25,7 @@ export default function RoleTransactions() {
   const router = useRouter();
 
   const saveAndReturn = () => {
-    router.push("/");
+    router.push("/transactions");
   };
 
   const createBusinessRole = () => {

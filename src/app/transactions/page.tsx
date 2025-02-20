@@ -1,58 +1,146 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Transactions() {
+  type FormState = {
+    transaction: string;
+    description: string;
+    functional: string;
+    keyOwner: string;
+  }[];
+
   const router = useRouter();
+
+  const [data, setData] = useState<FormState>([]);
+  const [formValues, setFormValues] = useState({
+    transaction: "",
+    description: "",
+    functional: "",
+    keyOwner: "",
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setData((prevData) => [...prevData, formValues]);
 
-    router.push("/roles/role-name");
+    setFormValues({
+      transaction: "",
+      description: "",
+      functional: "",
+      keyOwner: "",
+    });
+
   };
+
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      <div className="flex flex-col items-center justify-center min-h-screen py-2 px-40 gap-4">
         <h1 className="text-6xl font-bold pb-10">POC SAP Greenfield</h1>
-        <form className="flex flex-col items-start justify-center gap-4 w-fit">
-          <label className="text-2xl font-bold">Enter Transaction Name: </label>
-          <input
-            type="text"
-            className="border border-black rounded-md p-2 w-full"
-            placeholder="Transaction"
-            required
-          />
-          <label className="text-2xl font-bold">
-            Enter Transaction Description:{" "}
-          </label>
-          <input
-            type="text"
-            className="border border-black rounded-md p-2 w-full"
-            placeholder="Description"
-            required
-          />
-          <label className="text-2xl font-bold">
-            Enter The Functional Owner:
-          </label>
-          <input
-            type="text"
-            className="border border-black rounded-md p-2 w-full"
-            placeholder="Functional Owner"
-            required
-          />
-          <label className="text-2xl font-bold">Enter The Key Owner: </label>
-          <input
-            type="text"
-            className="border border-black rounded-md p-2 w-full"
-            placeholder="Key Owner"
-            required
-          />
+        <form
+          className="flex flex-row items-end gap-4 w-fit"
+          onSubmit={handleSubmit}
+        >
+          <div className="flex flex-col items-start justify-center gap-4 w-fit">
+            <label className="text-2xl font-bold">
+              Transaction Name:
+            </label>
+            <input
+              type="text"
+              className="border border-black rounded-md p-2 w-full"
+              placeholder="Transaction"
+              onChange={handleChange}
+              name="transaction"
+              value={formValues.transaction}
+              required
+            />
+          </div>
+          <div className="flex flex-col items-start justify-center gap-4 w-fit">
+            <label className="text-2xl font-bold">
+              Transaction Description:
+            </label>
+            <input
+              type="text"
+              className="border border-black rounded-md p-2 w-full"
+              placeholder="Description"
+              onChange={handleChange}
+              name="description"
+              value={formValues.description}
+              required
+            />
+          </div>
+          <div className="flex flex-col items-start justify-center gap-4 w-fit">
+            <label className="text-2xl font-bold">
+              Functional Owner:
+            </label>
+            <input
+              type="text"
+              className="border border-black rounded-md p-2 w-full"
+              placeholder="Functional Owner"
+              onChange={handleChange}
+              name="functional"
+              value={formValues.functional}
+              required
+            />
+          </div>
+          <div className="flex flex-col items-start justify-center gap-4 w-fit">
+            <label className="text-2xl font-bold">Key Owner: </label>
+            <input
+              type="text"
+              className="border border-black rounded-md p-2 w-full"
+              placeholder="Key Owner"
+              onChange={handleChange}
+              name="keyOwner"
+              value={formValues.keyOwner}
+              required
+            />
+          </div>
           <button
             type="submit"
-            className="bg-black text-white font-bold rounded-md px-4 py-2 w-full"
+            className="bg-black text-white font-bold rounded-md px-4 py-2 w-fit h-fit"
           >
             Submit
           </button>
+          <button
+            className="bg-black text-white font-bold rounded-md px-4 py-2 w-fit h-fit"
+            onClick={() => router.push("/")}
+          >
+            Save
+          </button>
         </form>
+        <table className="w-full rounded-md overflow-hidden">
+          <thead className="bg-black text-white">
+            <tr>
+              <th className="p-3 border border-gray-800">Transaction</th>
+              <th className="p-3 border border-gray-800">Description</th>
+              <th className="p-3 border border-gray-800">Functional</th>
+              <th className="p-3 border border-gray-800">Key Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((value, index) => (
+              <tr key={index}>
+                <td className="p-3 border border-gray-800">{value.transaction}</td>
+                <td className="p-3 border border-gray-800">{value.description}</td>
+                <td className="p-3 border border-gray-800">{value.functional}</td>
+                <td className="p-3 border border-gray-800">{value.keyOwner}</td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot className="p-0 bg-black border border-gray-800 rounded-b-md max-h-1">
+            <tr>
+              <td colSpan={4} ></td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
     </>
   );
