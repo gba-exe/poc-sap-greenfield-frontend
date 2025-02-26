@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function RoleTransactions() {
@@ -8,6 +8,8 @@ export default function RoleTransactions() {
   const [transactions, setTransactions] = useState<string[]>([]);
 
   useEffect(() => {
+    addInput();
+
     const fetchTransactions = async () => {
       try {
         const response = await fetch("http://localhost:5000/transactions/code");
@@ -17,15 +19,17 @@ export default function RoleTransactions() {
       } catch (error) {
         console.error("Error fetching transactions: ", error);
       }
-    }
+    };
 
     fetchTransactions();
   }, []);
 
   const router = useRouter();
 
+  const roleName = useSearchParams().get("roleName").toUpperCase();
+
   const saveAndReturn = () => {
-    router.push("/transactions");
+    router.push("/");
   };
 
   const createBusinessRole = () => {
@@ -45,12 +49,17 @@ export default function RoleTransactions() {
     func();
   };
 
-  const addInput = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const addInput = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e) {
+      e.preventDefault();
+    }
+
     setInputs((prev) => [...prev, Math.random()]);
   };
 
   const removeInput = (id: number) => {
+    if (inputs.length === 1) return;
+
     setInputs((prev) => prev.filter((input) => input !== id));
   };
 
@@ -72,34 +81,17 @@ export default function RoleTransactions() {
             }
           }}
         >
-          <label className="text-2xl font-bold">Enter Transaction: </label>
-          <div className="flex flex-row items-center justify-center gap-2">
-            <select
-              className="border border-black rounded-md p-2 min-w-64"
-              required>
-              <option value="">-- Select a transaction --</option>
-              {transactions.map((value) => (
-                <option key={value} value={value}>
-                  {value}
-                </option>
-              ))}
-            </select>
-            <button
-              className="bg-black text-white font-bold rounded-md px-4 py-2"
-              onClick={addInput}
-            >
-              +
-            </button>
-          </div>
+          <label className="text-2xl font-bold">Enter Transactions for role {roleName}: </label>
           {inputs.map((id) => (
             <div
               key={id}
-              className="flex flex-row items-start justify-center gap-2"
+              className="flex flex-row items-start justify-start gap-2 w-full"
             >
               <select
                 key={id}
-                className="border border-black rounded-md p-2 min-w-64"
-                required>
+                className="border border-black rounded-md p-2 min-w-64 w-full"
+                required
+              >
                 <option value="">-- Select a transaction --</option>
                 {transactions.map((value) => (
                   <option key={value} value={value}>

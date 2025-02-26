@@ -59,7 +59,7 @@ export default function Role() {
     input.reportValidity();
 
     if (!error) {
-      const roleName = input.value;
+      const roleName = input.value.toUpperCase();
 
       router.push("/roles/role-transactions?roleName=" + roleName);
     }
@@ -80,8 +80,8 @@ export default function Role() {
             placeholder="Transaction"
             value={roleName}
             onChange={(e) => {
-              e.target.setCustomValidity("")
-              setRoleName(e.target.value)
+              e.target.setCustomValidity("");
+              setRoleName(e.target.value);
             }}
             required
           />
@@ -92,17 +92,29 @@ export default function Role() {
             placeholder="Key User"
             value={keyUser}
             onChange={(e) => {
-              e.target.setCustomValidity("")
-              setKeyUser(e.target.value)
+              e.target.setCustomValidity("");
+              setKeyUser(e.target.value);
             }}
             required
           />
+          <div
+          className="flex gap-1 w-full"
+          >
           <button
             type="submit"
-            className="bg-black text-white font-bold rounded-md px-4 py-2 w-full"
+            name="return"
+            className="box-border bg-white border-black border-2 text-black font-bold rounded-md p-2 min-w-fit w-full"
           >
-            Submit
+            Return
           </button>
+          <button
+            type="submit"
+            name="next"
+            className="box-border bg-black border-black border-2 text-white font-bold rounded-md p-2 min-w-fit w-full"
+          >
+            Next
+          </button>
+          </div>
         </form>
       </div>
     </>

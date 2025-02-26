@@ -7,7 +7,7 @@ export default function Transactions() {
     transaction: string;
     description: string;
     functional: string;
-    keyOwner: string;
+    keyUser: string;
   }[];
 
   const router = useRouter();
@@ -17,28 +17,50 @@ export default function Transactions() {
     transaction: "",
     description: "",
     functional: "",
-    keyOwner: "",
-  })
+    keyUser: "",
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormValues((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
+    if (e) e.preventDefault();
+
     setData((prevData) => [...prevData, formValues]);
 
     setFormValues({
       transaction: "",
       description: "",
       functional: "",
-      keyOwner: "",
+      keyUser: "",
     });
+  };
 
+  const handleSave = () => {
+    const postData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/transactions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Error saving data: ", error);
+      }
+    };
+
+    postData();
   };
 
   return (
@@ -50,16 +72,14 @@ export default function Transactions() {
           onSubmit={handleSubmit}
         >
           <div className="flex flex-col items-start justify-center gap-4 w-fit">
-            <label className="text-2xl font-bold">
-              Transaction Name:
-            </label>
+            <label className="text-2xl font-bold">Transaction Name:</label>
             <input
               type="text"
               className="border border-black rounded-md p-2 w-full"
               placeholder="Transaction"
               onChange={handleChange}
               name="transaction"
-              value={formValues.transaction}
+              value={formValues.transaction.toUpperCase()}
               required
             />
           </div>
@@ -78,9 +98,7 @@ export default function Transactions() {
             />
           </div>
           <div className="flex flex-col items-start justify-center gap-4 w-fit">
-            <label className="text-2xl font-bold">
-              Functional Owner:
-            </label>
+            <label className="text-2xl font-bold">Functional Owner:</label>
             <input
               type="text"
               className="border border-black rounded-md p-2 w-full"
@@ -92,14 +110,14 @@ export default function Transactions() {
             />
           </div>
           <div className="flex flex-col items-start justify-center gap-4 w-fit">
-            <label className="text-2xl font-bold">Key Owner: </label>
+            <label className="text-2xl font-bold">Key User: </label>
             <input
               type="text"
               className="border border-black rounded-md p-2 w-full"
-              placeholder="Key Owner"
+              placeholder="Key User"
               onChange={handleChange}
-              name="keyOwner"
-              value={formValues.keyOwner}
+              name="keyUser"
+              value={formValues.keyUser}
               required
             />
           </div>
@@ -110,8 +128,9 @@ export default function Transactions() {
             Submit
           </button>
           <button
+            type="button"
             className="bg-black text-white font-bold rounded-md px-4 py-2 w-fit h-fit"
-            onClick={() => router.push("/")}
+            onClick={handleSave}
           >
             Save
           </button>
@@ -122,22 +141,28 @@ export default function Transactions() {
               <th className="p-3 border border-gray-800">Transaction</th>
               <th className="p-3 border border-gray-800">Description</th>
               <th className="p-3 border border-gray-800">Functional</th>
-              <th className="p-3 border border-gray-800">Key Owner</th>
+              <th className="p-3 border border-gray-800">Key User</th>
             </tr>
           </thead>
           <tbody>
             {data.map((value, index) => (
               <tr key={index}>
-                <td className="p-3 border border-gray-800">{value.transaction}</td>
-                <td className="p-3 border border-gray-800">{value.description}</td>
-                <td className="p-3 border border-gray-800">{value.functional}</td>
-                <td className="p-3 border border-gray-800">{value.keyOwner}</td>
+                <td className="p-3 border border-gray-800">
+                  {value.transaction}
+                </td>
+                <td className="p-3 border border-gray-800">
+                  {value.description}
+                </td>
+                <td className="p-3 border border-gray-800">
+                  {value.functional}
+                </td>
+                <td className="p-3 border border-gray-800">{value.keyUser}</td>
               </tr>
             ))}
           </tbody>
           <tfoot className="p-0 bg-black border border-gray-800 rounded-b-md max-h-1">
             <tr>
-              <td colSpan={4} ></td>
+              <td colSpan={4}></td>
             </tr>
           </tfoot>
         </table>

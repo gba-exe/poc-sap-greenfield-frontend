@@ -14,8 +14,8 @@ export default function Transactions() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2">
-        <h1 className="text-6xl font-bold pb-10">Welcome to POC SAP Greenfield!</h1>
+      <div className="flex flex-col items-center justify-center min-h-screen py-2 gap-2">
+        <h1 className="text-6xl font-bold">Welcome to POC SAP Greenfield!</h1>
         <h2 className="text-4xl pb-10">Choose an option:</h2>
         <button
           className="bg-black text-white font-bold rounded-md px-4 py-2 w-fit"
