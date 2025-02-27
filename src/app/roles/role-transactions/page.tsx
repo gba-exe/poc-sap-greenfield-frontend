@@ -4,12 +4,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function RoleTransactions() {
-  const [inputs, setInputs] = useState<number[]>([]);
+  const [inputs, setInputs] = useState<number[]>([1]);
   const [transactions, setTransactions] = useState<string[]>([]);
 
   useEffect(() => {
-    addInput();
-
     const fetchTransactions = async () => {
       try {
         const response = await fetch("http://localhost:5000/transactions/code");
@@ -26,7 +24,7 @@ export default function RoleTransactions() {
 
   const router = useRouter();
 
-  const roleName = useSearchParams().get("roleName").toUpperCase();
+  const roleName = useSearchParams().get("roleName") || "";
 
   const saveAndReturn = () => {
     router.push("/");
@@ -65,8 +63,21 @@ export default function RoleTransactions() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2">
-        <h1 className="text-6xl font-bold pb-10">POC SAP Greenfield</h1>
+      <div className="flex justify-between py-40 px-40">
+        <button
+          className="box-border bg-white border-black border-2 text-black font-bold rounded-md p-2 min-w-32"
+          onClick={() => router.back()}
+        >
+          Previous
+        </button>
+        <button
+          type="button"
+          className="bg-black border-black border-2 text-white font-bold rounded-md px-4 py-2 min-w-32"
+        >
+          Next
+        </button>
+      </div>
+      <div className="flex flex-col items-center justify-center py-2">
         <form
           className="flex flex-col items-start justify-center gap-4 w-fit"
           onSubmit={(e) => {
@@ -81,7 +92,9 @@ export default function RoleTransactions() {
             }
           }}
         >
-          <label className="text-2xl font-bold">Enter Transactions for role {roleName}: </label>
+          <label className="text-2xl font-bold">
+            Enter Transactions for role {roleName}:{" "}
+          </label>
           {inputs.map((id) => (
             <div
               key={id}
@@ -116,7 +129,7 @@ export default function RoleTransactions() {
           <div className="flex flex-row items-center justify-center gap-2 w-full">
             <button
               type="submit"
-              name="save-and-return"
+              name="return"
               className="box-border bg-white border-black border-2 text-black font-bold rounded-md p-2 min-w-fit w-full"
             >
               Save and Return

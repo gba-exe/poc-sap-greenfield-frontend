@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Role() {
   const router = useRouter();
@@ -49,17 +49,15 @@ export default function Role() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const input = e.currentTarget.querySelector("input"); // Get the input field
-    if (!input) return;
-
+  const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
+    if (e) e.preventDefault();
+    const input = document.querySelector("input") as HTMLInputElement;
     const error = validate(roleName);
     input.setCustomValidity(error || "");
     input.reportValidity();
 
     if (!error) {
-      const roleName = input.value.toUpperCase();
+      const roleName = input.value;
 
       router.push("/roles/role-transactions?roleName=" + roleName);
     }
@@ -67,8 +65,22 @@ export default function Role() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2">
-        <h1 className="text-6xl font-bold pb-10">POC SAP Greenfield</h1>
+      <div className="flex justify-between py-40 px-40">
+        <button
+          className="box-border bg-white border-black border-2 text-black font-bold rounded-md p-2 min-w-32"
+          onClick={() => router.back()}
+        >
+          Previous
+        </button>
+        <button
+          type="button"
+          className="bg-black border-black border-2 text-white font-bold rounded-md px-4 py-2 min-w-32"
+          onClick={() => handleSubmit()}
+        >
+          Next
+        </button>
+      </div>
+      <div className="flex flex-col items-center justify-center py-2">
         <form
           className="flex flex-col items-start justify-center gap-4 w-fit"
           onSubmit={(e) => handleSubmit(e)}
@@ -97,23 +109,13 @@ export default function Role() {
             }}
             required
           />
-          <div
-          className="flex gap-1 w-full"
-          >
-          <button
-            type="submit"
-            name="return"
-            className="box-border bg-white border-black border-2 text-black font-bold rounded-md p-2 min-w-fit w-full"
-          >
-            Return
-          </button>
-          <button
-            type="submit"
-            name="next"
-            className="box-border bg-black border-black border-2 text-white font-bold rounded-md p-2 min-w-fit w-full"
-          >
-            Next
-          </button>
+          <div className="flex flex-row items-start justify-start gap-2 w-full">
+            <button
+              type="submit"
+              className="box-border bg-black border-black border-2 text-white font-bold rounded-md p-2 min-w-fit w-full"
+            >
+              Submit
+            </button>
           </div>
         </form>
       </div>

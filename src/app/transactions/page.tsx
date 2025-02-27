@@ -22,10 +22,17 @@ export default function Transactions() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name === "transaction") {
+      setFormValues((prev) => ({
+        ...prev,
+        [name]: value.toUpperCase(),
+      }));
+    } else {
+      setFormValues((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
@@ -65,8 +72,22 @@ export default function Transactions() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2 px-40 gap-4">
-        <h1 className="text-6xl font-bold pb-10">POC SAP Greenfield</h1>
+      <div className="flex justify-between py-40 px-40">
+        <button
+          className="box-border bg-white border-black border-2 text-black font-bold rounded-md p-2 min-w-32"
+          onClick={() => router.back()}
+        >
+          Previous
+        </button>
+        <button
+          type="button"
+          className="bg-black border-black border-2 text-white font-bold rounded-md px-4 py-2 min-w-32"
+          onClick={handleSave}
+        >
+          Save
+        </button>
+      </div>
+      <div className="flex flex-col items-center justify-center py-2 px-40 gap-4">
         <form
           className="flex flex-row items-end gap-4 w-fit"
           onSubmit={handleSubmit}
@@ -79,14 +100,12 @@ export default function Transactions() {
               placeholder="Transaction"
               onChange={handleChange}
               name="transaction"
-              value={formValues.transaction.toUpperCase()}
+              value={formValues.transaction}
               required
             />
           </div>
           <div className="flex flex-col items-start justify-center gap-4 w-fit">
-            <label className="text-2xl font-bold">
-              Transaction Description:
-            </label>
+            <label className="text-2xl font-bold">Description:</label>
             <input
               type="text"
               className="border border-black rounded-md p-2 w-full"
@@ -123,25 +142,18 @@ export default function Transactions() {
           </div>
           <button
             type="submit"
-            className="bg-black text-white font-bold rounded-md px-4 py-2 w-fit h-fit"
+            className="box-border bg-white border-black border-2 text-black font-bold rounded-md p-2 min-w-32"
           >
             Submit
-          </button>
-          <button
-            type="button"
-            className="bg-black text-white font-bold rounded-md px-4 py-2 w-fit h-fit"
-            onClick={handleSave}
-          >
-            Save
           </button>
         </form>
         <table className="w-full rounded-md overflow-hidden">
           <thead className="bg-black text-white">
             <tr>
-              <th className="p-3 border border-gray-800">Transaction</th>
-              <th className="p-3 border border-gray-800">Description</th>
-              <th className="p-3 border border-gray-800">Functional</th>
-              <th className="p-3 border border-gray-800">Key User</th>
+              <th className="p-3">Transaction</th>
+              <th className="p-3">Description</th>
+              <th className="p-3">Functional</th>
+              <th className="p-3">Key User</th>
             </tr>
           </thead>
           <tbody>
@@ -160,7 +172,7 @@ export default function Transactions() {
               </tr>
             ))}
           </tbody>
-          <tfoot className="p-0 bg-black border border-gray-800 rounded-b-md max-h-1">
+          <tfoot className="p-0 bg-black max-h-1">
             <tr>
               <td colSpan={4}></td>
             </tr>
