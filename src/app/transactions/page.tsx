@@ -74,10 +74,10 @@ export default function Transactions() {
     <>
       <div className="flex justify-between py-40 px-40">
         <button
-          className="box-border bg-white border-black border-2 text-black font-bold rounded-md p-2 min-w-32"
+          className="box-border bg-white border-black border-2 text-black font-bold rounded-md p-2 min-w-16"
           onClick={() => router.back()}
         >
-          Previous
+        {"<"} 
         </button>
         <button
           type="button"

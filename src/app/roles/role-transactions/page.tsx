@@ -65,16 +65,10 @@ export default function RoleTransactions() {
     <>
       <div className="flex justify-between py-40 px-40">
         <button
-          className="box-border bg-white border-black border-2 text-black font-bold rounded-md p-2 min-w-32"
+          className="box-border bg-white border-black border-2 text-black font-bold rounded-md p-2 min-w-16"
           onClick={() => router.back()}
         >
-          Previous
-        </button>
-        <button
-          type="button"
-          className="bg-black border-black border-2 text-white font-bold rounded-md px-4 py-2 min-w-32"
-        >
-          Next
+          {"<"}
         </button>
       </div>
       <div className="flex flex-col items-center justify-center py-2">
@@ -129,7 +123,7 @@ export default function RoleTransactions() {
           <div className="flex flex-row items-center justify-center gap-2 w-full">
             <button
               type="submit"
-              name="return"
+              name="save-and-return"
               className="box-border bg-white border-black border-2 text-black font-bold rounded-md p-2 min-w-fit w-full"
             >
               Save and Return
