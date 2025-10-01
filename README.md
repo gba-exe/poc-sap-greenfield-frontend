@@ -40,8 +40,8 @@ Frontend minimalista para uma PoC.
 1. Clone o repositório
 
 ```bash
-git clone <URL_DO_REPO>
-cd <PASTA_DO_PROJETO>
+git clone https://github.com/gba-exe/poc-sap-greenfield-frontend
+cd poc-sap-greenfield-frontend
 ```
 
 2. Instale as dependências:
